@@ -1,6 +1,7 @@
-# ignore everything except for directories, pngs, and jsons
-* 
-!*/
-!*.json
-!*.png
+# # ignore everything except for directories, pngs, and jsons
+# *
+# !*/
+# !*.json
+# !*.png
 !.gitignore
+ru/*
