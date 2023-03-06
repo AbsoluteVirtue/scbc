@@ -8,18 +8,79 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" id="bottom">
     </div>
 
     <!-- <script>
         fetch('db.json').then(response => response.json()).then(data => {console.log(data)})
     </script> -->
     <script type="text/javascript" src="./db.js"></script>
+
     <script>
+        // document.body.onload = addElements;
+        // function addElements() {
 
-        for (const [key, value] of Object.entries(data)) {
-            console.log(key);
+        //     for (const [key, value] of Object.entries(data)) {
+        //         const table = document.createElement("table");
+        //         const thead = document.createElement("thead");
+        //         const row = document.createElement("tr");
+        //         row.appendChild(document.createElement("th", key));
+        //         thead.appendChild(row);
+        //         table.appendChild(thead);
+
+        //         const bottom = document.getElementById("bottom");
+        //         document.body.insertBefore(table, bottom);
+        //     }
+        // }
+
+        document.body.onload = addElement;
+
+        function addElement() {
+            const currentDiv = document.getElementById("bottom");
+
+            for (const [category, items] of Object.entries(data)) {
+                const table = document.createElement("table");
+
+                const head = table.createTHead();
+                const r = head.insertRow();
+                r.textContent = category
+
+                const body = table.createTBody();
+
+                for (const item of items) {
+                    const tr = body.insertRow();
+
+                    const name = tr.insertCell();
+                    name.textContent = item["id"];
+
+                    const pic = tr.insertCell();
+                    pic_url = `assets/icons/${category}/${item["class"]}/${item["exboid"]}.png`;
+                    pic.innerHTML = `<img src="${pic_url}"/>`
+
+                    const bonus = tr.insertCell();
+                    var str_bonus = "";
+                    for (const [k, v] of Object.entries(item["bonus"])) {
+                        str_bonus += `${k}: ${v}\n`;
+                    }
+                    bonus.textContent = str_bonus;
+
+                    const stats = tr.insertCell();
+                    var str_stats = "";
+                    for (const [k, v] of Object.entries(item["stats"])) {
+                        str_stats += `${k}: ${v}\n`;
+                    }
+                    stats.textContent = str_stats;
+
+                    const cost = tr.insertCell();
+                    var str_cost = "";
+                    for (const [k, v] of Object.entries(item["cost"])) {
+                        str_cost += `${k}: ${v}\n`;
+                    }
+                    cost.textContent = str_cost;
+                }
+
+                document.body.insertBefore(table, currentDiv);
+            }
         }
-
     </script>
 </body>
