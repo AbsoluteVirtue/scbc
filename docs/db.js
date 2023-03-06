@@ -21,7 +21,7 @@ const data = {
                 "tem": 50,
                 "bio": 200,
                 "psi": 170,
-                "kro": 0
+                "kro": 75
             },
             "cost": {
                 "rub": 4141130,
