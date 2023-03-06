@@ -4,4 +4,8 @@
 # !*.json
 # !*.png
 !.gitignore
+
+# additional
+!LICENSE
+!README.md
 ru/*
