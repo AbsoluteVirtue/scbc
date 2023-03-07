@@ -4,6 +4,18 @@
     <!-- <link rel="icon" type="image/png" href="./static/favicon.png" /> -->
 
     <style>
+        table {
+            width: 75%;
+            padding: 2;
+            border: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -17,37 +29,39 @@
     <script type="text/javascript" src="./db.js"></script>
 
     <script>
-        // document.body.onload = addElements;
-        // function addElements() {
+        const ARMOR_CLASSES = ["combat", "research", "clothes", "combined", "scientific"];
+        const WEAPON_CLASSES = ["ar", "melee", "pistol", "shotgun", "lr", "smg", "mg", "heavy"];
 
-        //     for (const [key, value] of Object.entries(data)) {
-        //         const table = document.createElement("table");
-        //         const thead = document.createElement("thead");
-        //         const row = document.createElement("tr");
-        //         row.appendChild(document.createElement("th", key));
-        //         thead.appendChild(row);
-        //         table.appendChild(thead);
+        const CATEGORIES = ["weapons", "armor"];
+        const CLASS_DICT = {
+            "armor": ARMOR_CLASSES,
+            "weapons": WEAPON_CLASSES
+        };
+    </script>
 
-        //         const bottom = document.getElementById("bottom");
-        //         document.body.insertBefore(table, bottom);
-        //     }
-        // }
-
+    <script>
         document.body.onload = addElement;
 
         function addElement() {
             const currentDiv = document.getElementById("bottom");
 
             for (const [category, items] of Object.entries(data)) {
+                if (category != "armor") continue; // TODO: add proper category filter
+
                 const table = document.createElement("table");
 
                 const head = table.createTHead();
                 const r = head.insertRow();
-                r.textContent = category
+                r.innerHTML = category
 
                 const body = table.createTBody();
 
-                for (const item of items) {
+                let class_picker = CLASS_DICT[category]; // TODO: filter out classes based on active buttons
+
+                const classes = CLASS_DICT[category].filter(item => class_picker.includes(item));
+                const filtered_items = items.filter(item => classes.includes(item["class"]));
+
+                for (const item of filtered_items) {
                     const tr = body.insertRow();
 
                     const name = tr.insertCell();
@@ -60,23 +74,23 @@
                     const bonus = tr.insertCell();
                     var str_bonus = "";
                     for (const [k, v] of Object.entries(item["bonus"])) {
-                        str_bonus += `${k}: ${v}\n`;
+                        str_bonus += `<div>${k}: ${v}</div>`;
                     }
-                    bonus.textContent = str_bonus;
+                    bonus.innerHTML = str_bonus;
 
                     const stats = tr.insertCell();
                     var str_stats = "";
                     for (const [k, v] of Object.entries(item["stats"])) {
-                        str_stats += `${k}: ${v}\n`;
+                        str_stats += `<div>${k}: ${v}</div>`;
                     }
-                    stats.textContent = str_stats;
+                    stats.innerHTML = str_stats;
 
                     const cost = tr.insertCell();
                     var str_cost = "";
                     for (const [k, v] of Object.entries(item["cost"])) {
-                        str_cost += `${k}: ${v}\n`;
+                        str_cost += `<div>${k}: ${v}</div>`;
                     }
-                    cost.textContent = str_cost;
+                    cost.innerHTML = str_cost;
                 }
 
                 document.body.insertBefore(table, currentDiv);
