@@ -13,8 +13,13 @@
         }
 
         td {
+            border: 1px solid;
             text-align: center;
             vertical-align: middle;
+        }
+
+        .tcell {
+            text-align: left;
         }
     </style>
 </head>
@@ -27,6 +32,7 @@
         fetch('db.json').then(response => response.json()).then(data => {console.log(data)})
     </script> -->
     <script type="text/javascript" src="./db.js"></script>
+    <script type="text/javascript" src="./tr.js"></script>
 
     <script>
         const ARMOR_CLASSES = ["combat", "research", "clothes", "combined", "scientific"];
@@ -42,6 +48,8 @@
     <script>
         document.body.onload = addElement;
 
+        const language = "ru"; // TODO: add language picker
+
         function addElement() {
             const currentDiv = document.getElementById("bottom");
 
@@ -52,7 +60,7 @@
 
                 const head = table.createTHead();
                 const r = head.insertRow();
-                r.innerHTML = category
+                r.innerHTML = LANG[language][category];
 
                 const body = table.createTBody();
 
@@ -65,30 +73,31 @@
                     const tr = body.insertRow();
 
                     const name = tr.insertCell();
-                    name.textContent = item["id"];
+                    name.innerHTML = LANG[language][item["id"]];
 
                     const pic = tr.insertCell();
                     pic_url = `assets/icons/${category}/${item["class"]}/${item["exboid"]}.png`;
                     pic.innerHTML = `<img src="${pic_url}"/>`
 
                     const bonus = tr.insertCell();
+
                     var str_bonus = "";
                     for (const [k, v] of Object.entries(item["bonus"])) {
-                        str_bonus += `<div>${k}: ${v}</div>`;
+                        str_bonus += `<div class="tcell">${LANG[language][k]}: ${v}</div>`;
                     }
                     bonus.innerHTML = str_bonus;
 
                     const stats = tr.insertCell();
                     var str_stats = "";
                     for (const [k, v] of Object.entries(item["stats"])) {
-                        str_stats += `<div>${k}: ${v}</div>`;
+                        str_stats += `<div class="tcell">${LANG[language][k]}: ${v}</div>`;
                     }
                     stats.innerHTML = str_stats;
 
                     const cost = tr.insertCell();
                     var str_cost = "";
                     for (const [k, v] of Object.entries(item["cost"])) {
-                        str_cost += `<div>${k}: ${v}</div>`;
+                        str_cost += `<div class="tcell">${LANG[language][k]}: ${v}</div>`;
                     }
                     cost.innerHTML = str_cost;
                 }
